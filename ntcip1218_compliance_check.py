@@ -1,8 +1,9 @@
 import argparse
 import csv
 import json
-import paramiko
+#import paramiko
 import re
+import subprocess
 
 def evaluate_result(result_string, cmddata):
     """
@@ -102,6 +103,52 @@ def execute_snmp_command(hostdata, snmpdata, cmddata):
 
     return result_evaluation, cmdresult
 
+def execute_snmp_command_local(snmpdata, cmddata):
+    """
+    This function executes the given SNMP command and evaluates the result.
+    The SNMP command is executed on the local host using the shell. 
+    The result of the SNMP command is evaluated to check
+    if the command succeeded or failed. Results including a pass/fail flag
+    are returned from this routine. 
+
+    Parameters:
+        snmpdata (dict): contains security string and device ip for snmp command
+        cmddata (dict): contains reference name, command elements and evaluation strings
+
+    Returns:
+        str: reference information for the command
+        str: output text from the command execution no truncation.
+        str: result evaluation 'pass'|'fail'|'unknown'
+    """
+    # build snmp command (verb, security, device_reference)
+    snmp_verb = cmddata["command"]["snmp_cmd"]
+    snmp_security = snmpdata["snmp_security"]
+    snmp_device = snmpdata["snmp_device"]
+    cmd = f"{snmp_verb} {snmp_security} {snmp_device}"
+
+    # add multiple command elements to the command
+    for cmd_element in cmddata["command"]["snmp_cmd_elements"]:
+        cmd =  cmd + " " + cmd_element
+
+    # Execute command
+    cmdresult = ""
+    cmderror = ""
+    try:
+        result = subprocess.run(cmd, shell=True, capture_output=True, check=True)
+        cmdresult = result.stdout.decode()
+        print("stdout: {}".format(cmdresult))
+    except subprocess.CalledProcessError as e:
+        cmderror = e.stderr.decode()
+        print(f"Command not supported: {e}")
+
+    # Evaluate the result from the command execution
+    # The stdout and stderr strings often contain newlines, which complicates
+    #  analysis, so these strings are flattened and concatenated
+    cmdresult = cmdresult.replace("\n", " ") + cmderror.replace("\n", " ")
+    result_evaluation = evaluate_result(cmdresult, cmddata)
+
+    return result_evaluation, cmdresult
+
 def run_test_commands(cmdfilepath, outfilepath, truncatelength):
     """
     This function organizes a series of test snmp commands then 
@@ -118,15 +165,17 @@ def run_test_commands(cmdfilepath, outfilepath, truncatelength):
         cmddata = json.load(cmdfile)
 
     # assemble host shell login elements {host, user, pw}
-    host_login = {"host": cmddata['snmp_host']['host_reference'], 
-                  "user": cmddata['snmp_host']['host_user'],
-                  "pw": cmddata['snmp_host']['host_pw'] }
-    
-    print(host_login)
+    remote_host = True if cmddata['snmp_host']['host_type'] == "remote" else False
+
+    if remote_host:
+        host_login = {"host": cmddata['snmp_host']['host_reference'], 
+                "user": cmddata['snmp_host']['host_user'],
+                "pw": cmddata['snmp_host']['host_pw'] }
+        print(host_login)
 
     # assemble default snmp command string elements (snmp security, snmp device)
     snmp_elements = {"snmp_security": cmddata['snmp_connection']['security'],
-                     "snmp_device": cmddata['snmp_connection']['device_reference']}
+                "snmp_device": cmddata['snmp_connection']['device_reference']}
 
     # result list to write upon conclusion 
     result_list = []
@@ -139,8 +188,11 @@ def run_test_commands(cmdfilepath, outfilepath, truncatelength):
         cmd_type = cmd["command"]["snmp_cmd"]
         print("testing cmd: {}".format(cmd_reference))
 
-        # execute test command
-        cmdresult, resultdata = execute_snmp_command(host_login, snmp_elements, cmd)
+        # execute test command based on remote or local host
+        if remote_host:
+            cmdresult, resultdata = execute_snmp_command(host_login, snmp_elements, cmd)
+        else:
+            cmdresult, resultdata = execute_snmp_command_local(snmp_elements, cmd)
 
         # truncate the result string to user specified length
         # truncated for output only, evaluation occurred with the full output string 
