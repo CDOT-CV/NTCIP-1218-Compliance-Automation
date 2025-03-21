@@ -1,0 +1,596 @@
+{
+    "snmp_host": {
+        "host_type": "remote",
+        "host_reference": "1.1.1.1",
+        "host_user": "someuser",
+        "host_pw":"somepw"
+    },
+    "snmp_connection": {
+        "security": "-v 3 -u <snmpuser> -a SHA -A <authpw> -x AES -X <encryptpw> -l authpriv",
+        "device_reference": "1.2.3.4"
+    },
+    "test_commands": [
+        {
+            "command": {
+                "reference": "rsuModeStatus",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuModeStatus.0"
+                ],
+                "success_return": ["INTEGER: "],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuGnssStatus",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuGnssStatus.0"
+                ],
+                "success_return": ["INTEGER: [1-9]"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuGnssAugmentation",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuGnssAugmentation.0"
+                ],
+                "success_return": ["INTEGER: "],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuGnssOutputString",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuGnssOutputString.0"
+                ],
+                "success_return": [],
+                "fail_return": ["error", "GPGGA,{4}"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuGnssLat",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuGnssLat.0"
+                ],
+                "success_return": ["-?[0-9]+"],
+                "fail_return": ["error"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuGnssLon",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuGnssLon.0"
+                ],
+                "success_return": ["-?[0-9]+"],
+                "fail_return": ["error"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuGnssElv",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuGnssElv.0"
+                ],
+                "success_return": ["-?[0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuLocationLat",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuLocationLat.0"
+                ],
+                "success_return": ["INTEGER: -?[0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuLocationLon",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuLocationLon.0"
+                ],
+                "success_return": ["INTEGER: -?[0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuLocationElv",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuLocationElv.0"
+                ],
+                "success_return": ["INTEGER: -?[0-9]+"],
+                "fail_return": ["error"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuLocationDesc",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuLocationDesc.0"
+                ],
+                "success_return": ["STRING: "],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuGnssMaxDeviation",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuGnssMaxDeviation.0"
+                ],
+                "success_return": ["INTEGER: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuLocationDeviation",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuLocationDeviation.0"
+                ],
+                "success_return": ["INTEGER: [0-9]+","20001"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuGnssPositionError",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuGnssPositionError.0"
+                ],
+                "success_return": ["INTEGER: [0-9]+","200001"],
+                "fail_return": ["no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuStatus",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuStatus.0"
+                ],
+                "success_return": ["INTEGER: [1-5]", "okay", "warning", "critical", "unknown"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuFirmwareVersion",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuFirmwareVersion.0"
+                ],
+                "success_return": ["STRING: "],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuMibVersion",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuMibVersion.0"
+                ],
+                "success_return": ["STRING: NTCIP1218"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuID",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuID.0"
+                ],
+                "success_return": ["STRING: "],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuHostIpAddr",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuHostIpAddr.0"
+                ],
+                "success_return": ["STRING: [0-9A-Fa-f]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuHostNetMask",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuHostNetMask.0"
+                ],
+                "success_return": ["STRING: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuHostGateway",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuHostGateway.0"
+                ],
+                "success_return": ["STRING: [0-9A-Fa-f]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuHostDNS",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuHostDNS.0"
+                ],
+                "success_return": ["STRING: [0-9A-Fa-f]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuHostDHCPEnable",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuHostDHCPEnable.0"
+                ],
+                "success_return": ["STRING: [1-2]+", "disable", "enable"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+
+        {
+            "command": {
+                "reference": "rsuServiceTable",
+                "snmp_cmd": "snmpwalk",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuServiceTable"
+                ],
+                "success_return": ["STRING: RSU","STRING: GNSS"],
+                "fail_return": ["no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuReboot",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuReboot.0"
+                ],
+                "success_return": ["INTEGER: 0"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuTimeSincePowerOn",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuTimeSincePowerOn.0"
+                ],
+                "success_return": ["Counter32: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuIntTemp",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuIntTemp.0"
+                ],
+                "success_return": ["INTEGER: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "maxRsuMessageCountsByPsid",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::maxRsuMessageCountsByPsid.0"
+                ],
+                "success_return": ["INTEGER: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuMessageCountsByPsidTable",
+                "snmp_cmd": "snmpwalk",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuMessageCountsByPsidTable"
+                ],
+                "success_return": [],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuClockSource",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuClockSource.0"
+                ],
+                "success_return": ["INTEGER: "],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuClockSourceStatus",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuClockSourceStatus.0"
+                ],
+                "success_return": ["INTEGER: "],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuClockSourceTimeout",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuClockSourceTimeout.0"
+                ],
+                "success_return": ["INTEGER: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuClockDeviationTolerance",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuClockDeviationTolerance.0 i 0"
+                ],
+                "success_return": ["INTEGER: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "maxRsuReceivedMsgs",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::maxRsuReceivedMsgs.0"
+                ],
+                "success_return": ["INTEGER: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuReceivedMsgTable",
+                "snmp_cmd": "snmpwalk",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuReceivedMsgTable"
+                ],
+                "success_return": [],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "maxRsuMsgRepeat",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::maxRsuMsgRepeat.0"
+                ],
+                "success_return": ["INTEGER: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "deposit TIM index 55",
+                "snmp_cmd": "snmpset",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuMsgRepeatPsid.55 x 8003",
+                    "rsuMsgRepeatTxChannel.55 i 183",
+                    "rsuMsgRepeatTxInterval.55 i 1000",
+                    "rsuMsgRepeatDeliveryStart.55 x 07e902080e000000",
+                    "rsuMsgRepeatDeliveryStop.55 x 07e90a060c000000",
+                    "rsuMsgRepeatPayload.55 x 001F80847021DD72D95E38ABAD8A2D77300F775D9B0301C27136E069662E2CCFFFF93F40EEB97D00A007FAA897E4A070C2FD2A7556B160B98B46AB992E62C185FA50EFF4CBCFA3260C9A3066C9B2D64B584000000004E26DC0D2CC5C599271180040420C469DAFF8C47325E9FFAB019B558EA408C91C071E3C8D8A29BEFEEA0000013153DDD766C0",
+                    "rsuMsgRepeatEnable.55 i 1",
+                    "rsuMsgRepeatStatus.55 i 4",
+                    "rsuMsgRepeatPriority.55 i 4",
+                    "rsuMsgRepeatOptions.55 x 00"
+                ],
+                "success_return": ["55 = INTEGER: 183"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuMsgRepeatStatusTable",
+                "snmp_cmd": "snmpwalk",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuMsgRepeatStatusTable"
+                ],
+                "success_return": ["55 = INTEGER: 183"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuMsgRepeatOptions",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuMsgRepeatOptions.55"
+                ],
+                "success_return": ["BITS: [01]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "delete TIM index 55",
+                "snmp_cmd": "snmpset",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuMsgRepeatStatus.55 i 6"
+                ],
+                "success_return": ["55 = INTEGER: "],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuSecCredReq",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuSecCredReq.0"
+                ],
+                "success_return": ["INTEGER: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuSecEnrollCertStatus",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuSecEnrollCertStatus.0"
+                ],
+                "success_return": ["INTEGER: ", "enrolled", "notEnrolled", "unknown"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuSecEnrollCertValidRegion",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuSecEnrollCertValidRegion.0"
+                ],
+                "success_return": ["INTEGER: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuSecEnrollCertUrl",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuSecEnrollCertUrl.0"
+                ],
+                "success_return": ["STRING: https"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuSecEnrollCertId",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuSecEnrollCertId.0"
+                ],
+                "success_return": ["STRING: "],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuSecEnrollCertExpiration",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuSecEnrollCertExpiration.0"
+                ],
+                "success_return": ["STRING: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuSecuritySource",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuSecuritySource.0"
+                ],
+                "success_return": ["INTEGER: ", "scms"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuSecAppCertUrl",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuSecAppCertUrl.0"
+                ],
+                "success_return": ["STRING: https"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "maxRsuSecAppCerts",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::maxRsuSecAppCerts.0"
+                ],
+                "success_return": ["INTEGER: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuSecAppCertTable",
+                "snmp_cmd": "snmpwalk",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuSecAppCertTable"
+                ],
+                "success_return": ["1 = INTEGER: [0-9]+"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuSecCertRevocationUrl",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuSecCertRevocationUrl.0"
+                ],
+                "success_return": ["STRING: https"],
+                "fail_return": ["error", "no such instance"]
+            }
+        },
+        {
+            "command": {
+                "reference": "rsuSecCertRevocationTime",
+                "snmp_cmd": "snmpget",
+                "snmp_cmd_elements": [
+                    "NTCIP1218-v01::rsuSecCertRevocationTime.0"
+                ],
+                "success_return": [],
+                "fail_return": ["error", "no such instance"]
+            }
+        }
+    ]
+}
