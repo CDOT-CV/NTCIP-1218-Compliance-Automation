@@ -1,9 +1,10 @@
 {
     "snmp_host": {
-        "host_type": "remote",
+        "host_type": "remote_pw",
         "host_reference": "1.1.1.1",
         "host_user": "someuser",
-        "host_pw":"somepw"
+        "host_pw":"somepw",
+        "host_private_key":"/path/to/key.pem"
     },
     "snmp_connection": {
         "security": "-v 3 -u <snmpuser> -a SHA -A <authpw> -x AES -X <encryptpw> -l authpriv",
