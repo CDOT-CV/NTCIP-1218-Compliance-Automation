@@ -59,16 +59,16 @@ def remote_host_execute(hostdata, cmd):
 
         # connect with password
         if hostdata["host_type"] == "remote_pw":
-            client.connect(hostname=hostdata["host"], 
-                   username=hostdata["user"], 
-                   password=hostdata["pw"])
+            client.connect(hostname=hostdata["host_reference"], 
+                   username=hostdata["host_user"], 
+                   password=hostdata["host_pw"])
 
         # connect with private key 
         # password is used as the private key passphrase 
         else:
-            client.connect(hostname=hostdata["host"], 
-                   username=hostdata["user"], 
-                   password=hostdata["pw"],
+            client.connect(hostname=hostdata["host_reference"], 
+                   username=hostdata["host_user"], 
+                   password=hostdata["host_pw"],
                    key_filename=hostdata["host_private_key"])
             
         # Execute the SNMP command 
@@ -83,8 +83,8 @@ def remote_host_execute(hostdata, cmd):
             "Failed to authenticate on remote host with the following data "
             "host_type: {}  host: {}  user: {}  password: {} "
             "private key path: {}")
-        errorMsg = errorMsg.format(hostdata["host_type"], hostdata["host"],
-                                   hostdata["user"], hostdata["pw"],
+        errorMsg = errorMsg.format(hostdata["host_type"], hostdata["host_reference"],
+                                   hostdata["host_user"], hostdata["host_pw"],
                                    hostdata["host_private_key"])
         raise ValueError(errorMsg)
                     
