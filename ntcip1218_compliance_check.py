@@ -6,7 +6,7 @@ import re
 import subprocess
 
 
-def local_host_execute(cmd):
+def local_host_execute(cmd, hostdata):
     """
     This function executes the given SNMP command on a local host 
     (the server that this script is running on). The stdout and stderr 
@@ -14,8 +14,7 @@ def local_host_execute(cmd):
 
     Parameters:
         cmd (string): the assembled SNMP command to execute
-        snmpdata (dict): security string and device ip for snmp command
-        cmddata (dict): reference name, command elements and evaluation strings
+        hostdata (dict): host connection data, not used for this local host execution
 
     Returns:
         str: stdout text from the command execution
@@ -34,7 +33,7 @@ def local_host_execute(cmd):
 
     return cmdresult, cmderror
 
-def remote_host_execute(hostdata, cmd):
+def remote_host_execute(cmd, hostdata):
     """
     This function executes the given SNMP command on a remote host. 
     The remote host may authenticate a shell access using either a 
@@ -42,9 +41,9 @@ def remote_host_execute(hostdata, cmd):
     using paramiko.  
 
     Parameters:
-        hostdata (dict): access data for the remote host executing the snmp command
         cmd (string): the fully defined SNMP command to execute on the remote host
-
+        hostdata (dict): connection and authentication data for the remote host
+        
     Returns:
         str: stdout text from the command execution
         str: stderr text from the command execution
@@ -136,7 +135,7 @@ def evaluate_result(result_string, cmddata):
 
     return result
 
-def execute_snmp_command(hostdata, snmpdata, cmddata):
+def execute_snmp_command(host_exec_func, hostdata, snmpdata, cmddata):
     """
     This function executes the given SNMP command and evaluates the result.
     The SNMP command is executed on the host defined in the hostdata. The host 
@@ -165,20 +164,8 @@ def execute_snmp_command(hostdata, snmpdata, cmddata):
     for cmd_element in cmddata["command"]["snmp_cmd_elements"]:
         cmd =  cmd + " " + cmd_element
 
-    # determine the host type to execute the SNMP command
-    # "remote_key"  remote host using a private key for ssh login authentication
-    # "remote_pw"   remote host using a password for ssh login authentication
-    # "local"       local host using direct shell commands (no shell login required)
-    # this statement is here primarily to confirm the host_type is specified correctly
-    match hostdata['host_type']:
-        case "remote_pw" | "remote_key":
-            cmdresult, cmderror = remote_host_execute(hostdata,cmd)
-
-        case "local":
-            cmdresult, cmderror = local_host_execute(cmd)
-
-        case _:
-            raise ValueError("Unknown host type. Host type must be one of: 'remote_pw', 'remote_key', 'local'")
+    # use the given host execute function to execute the command on the specified host server
+    cmdresult, cmderror = host_exec_func(cmd, hostdata)
 
     # Evaluate the result from the command execution
     # The stdout and stderr strings often contain newlines, which complicates
@@ -210,6 +197,24 @@ def run_test_commands(cmdfilepath, outfilepath, truncatelength):
     # this host data defines the connection to the host that executes the snmp command
     host_data = cmddata['snmp_host']
 
+    # determine the host function to execute the SNMP command
+    # "remote_key"  remote host using a private key for ssh login authentication
+    # "remote_pw"   remote host using a password for ssh login authentication
+    # "local"       local host using direct shell commands (no shell login required)
+    # this statement also confirms that the host_type is specified correctly
+    match host_data['host_type']:
+        case "remote_pw" | "remote_key":
+            exec_function = remote_host_execute
+            #cmdresult, cmderror = remote_host_execute(hostdata,cmd)
+
+        case "local":
+            exec_function = local_host_execute
+            #cmdresult, cmderror = local_host_execute(cmd)
+
+        case _:
+            raise ValueError("Unknown host type. Host type must be one of: 'remote_pw', 'remote_key', 'local'")
+
+
     # assemble default snmp command string elements (snmp security, snmp device)
     snmp_elements = {"snmp_security": cmddata['snmp_connection']['security'],
                 "snmp_device": cmddata['snmp_connection']['device_reference']}
@@ -226,7 +231,7 @@ def run_test_commands(cmdfilepath, outfilepath, truncatelength):
         print("testing cmd: {}".format(cmd_reference))
 
         # execute test command based on host
-        cmdresult, resultdata = execute_snmp_command(host_data, snmp_elements, cmd)
+        cmdresult, resultdata = execute_snmp_command(exec_function, host_data, snmp_elements, cmd)
 
         # truncate the result string to user specified length
         # truncated for output only, evaluation occurred with the full output string 
