@@ -177,27 +177,25 @@ def execute_snmp_command(host_exec_func, hostdata, snmpdata, cmddata):
 
 def run_test_commands(cmdfilepath, outfilepath, truncatelength):
     """
-    This function organizes a series of test snmp commands then 
+    This function reads in a series of test snmp commands then 
     executes each test command and records the result of each 
     command to the specified output file. 
 
     Parameters:
-        cmdfilepath (file path): input file containing all the snmp commands to test
+        cmdfilepath (file path): input file containing the series of snmp commands to test
         outfilepath (file path): file to record results of the test
-        truncatelength (integer): max written length of the command output string
+        truncatelength (integer): max written length of the command results output string
     """
     # Read the SNMP command file - create corresponding cmddata dictionary
     with open(cmdfilepath, 'r') as cmdfile:
         cmddata = json.load(cmdfile)
 
-    # assemble host shell login elements {host_type, host_reference, user, pw}
-    # determine the type of host access and specify the host command execute function
-    
     # collect the host data {host_type, host_reference, host_user, host_pw, host_private_key}
     # this host data defines the connection to the host that executes the snmp command
     host_data = cmddata['snmp_host']
 
-    # determine the host function to execute the SNMP command
+    # determine the type of host access 
+    # specify the host function to execute the SNMP command
     # "remote_key"  remote host using a private key for ssh login authentication
     # "remote_pw"   remote host using a password for ssh login authentication
     # "local"       local host using direct shell commands (no shell login required)
@@ -205,15 +203,12 @@ def run_test_commands(cmdfilepath, outfilepath, truncatelength):
     match host_data['host_type']:
         case "remote_pw" | "remote_key":
             exec_function = remote_host_execute
-            #cmdresult, cmderror = remote_host_execute(hostdata,cmd)
 
         case "local":
             exec_function = local_host_execute
-            #cmdresult, cmderror = local_host_execute(cmd)
 
         case _:
             raise ValueError("Unknown host type. Host type must be one of: 'remote_pw', 'remote_key', 'local'")
-
 
     # assemble default snmp command string elements (snmp security, snmp device)
     snmp_elements = {"snmp_security": cmddata['snmp_connection']['security'],
