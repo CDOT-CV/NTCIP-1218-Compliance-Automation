@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [About](#about)
-- [Getting Started](#getting_started)
+- [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Contributing](../CONTRIBUTING.md)
 
@@ -11,13 +11,29 @@
 
 Simple application to review compliance against NTCIP 1218 standard. Note this is the initial version and will be updated with more features in the future. Currently only a subset of MIBs are checked. 
 
-The [ntcip1218_compliance_check.py](./ntcip1218_compliance_check.py) script executes a series of SNMP commands to an RSU. Command host must a server with an SNMP service configured and running, either locally or remotely. If MIB names are used in the input commands then the appropriate MIB files must be configured on the host server.
+The [ntcip1218_compliance_check.py](./ntcip1218_compliance_check.py) script executes a series of SNMP commands to an RSU. Command host must be a server with an SNMP service configured and running, either locally or remotely. If MIB names are used in the input commands then the appropriate MIB files must be configured on the host server.
 
 
 ### Prerequisites
-Python 3.12 or higher is required to run this project. Virtual environment is recommended to keep the dependencies clean and isolated from other projects.
+Python 3.12 or higher is required to run this project. Virtual environment is recommended to keep the dependencies clean and isolated from other projects.  
 
-A JSON file is used to store the SNMP commands to be executed, see [sample_snmp.json](./sample_snmp.json) for an example. Note that two sets of credentials are required to run the script on a remote host, one for SSH and one for SNMP. SNMP credentials are only required if running on a local host. The SSH credentials are used to connect to the host server and the SNMP credentials are used to execute the SNMP commands. SSH credentials are stored in the JSON file under the key "snmp_host" and SNMP credentials are stored under the key "snmp_connection". To specify if the script is intended to run on a local host, set the "host_type" field's value to "local", otherwise leave as "remote".
+The host server executing the SNMP commands must have an SNMP service configured and running. If MIB names are used in the SNMP commands, then the host SNMP service must be configured with the appropriate MIB files.
+
+If the host server is remote (i.e. not the server running the script) then appropriate login information must be configured in the SNMP command file to support an SSH login to the remote host. 
+
+## Getting Started <a name = "getting-started"></a>
+
+A JSON file is used to store the SNMP commands to be executed, see [sample_read_snmp.json](./sample_read_snmp.json) for an example. Note that the script can be run directly on the host that executes the SNMP commands or the script can be run on a different server and connect to the remote host that executes the SNMP commands. These different run configurations are specified in the "snmp_host.host_type" element of the SNMP command file. There are three configuration values supported:
+- "remote-key"   
+    Connect to a remote host using a private key file for ssh login authentication. The "host_private_key" element contains the path to the private_key file. If the private_key file requires a pass phrase, then this pass phrase must be specified in the "host_pw" element.  
+
+- "remote-pw"  
+    Connect to a remote host using a password for ssh login authentication. The "host_pw" element must contain the password for ssh login to the remote host.  
+
+- "local"  
+    The host executing the SNMP commands is the server that the script is running on. SNMP commands are executed directly as shell commands from the script. For this local configuration, the other "snmp_host" elements are not required.  
+
+The snmp_connection element holds data required to execute an SNMP command to the target RSU. The device_reference element contains the an ip address or URL to reach the target RSU, the security element contains the preliminary portion of the SNMP command string including the SNMP user name, authentication protocol and password, and encryption protocol and password.
 
 ## Usage <a name = "usage"></a>
 

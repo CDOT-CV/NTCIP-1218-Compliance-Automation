@@ -1,9 +1,10 @@
 {
     "snmp_host": {
-        "host_type": "remote",
+        "host_type": "remote_pw",
         "host_reference": "1.1.1.1",
         "host_user": "someuser",
-        "host_pw":"somepw"
+        "host_pw":"somepw",
+        "host_private_key":"/path/to/key.pem"
     },
     "snmp_connection": {
         "security": "-v 3 -u <snmpuser> -a SHA -A <authpw> -x AES -X <encryptpw> -l authpriv",
@@ -18,7 +19,7 @@
                     "NTCIP1218-v01::rsuModeStatus.0"
                 ],
                 "success_return": ["INTEGER: "],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -29,7 +30,7 @@
                     "NTCIP1218-v01::rsuGnssStatus.0"
                 ],
                 "success_return": ["INTEGER: [1-9]"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -40,7 +41,7 @@
                     "NTCIP1218-v01::rsuGnssAugmentation.0"
                 ],
                 "success_return": ["INTEGER: "],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -50,7 +51,7 @@
                 "snmp_cmd_elements": [
                     "NTCIP1218-v01::rsuGnssOutputString.0"
                 ],
-                "success_return": [],
+                "success_return": ["$GPGGA,[0-9]+"],
                 "fail_return": ["error", "GPGGA,{4}"]
             }
         },
@@ -84,7 +85,7 @@
                     "NTCIP1218-v01::rsuGnssElv.0"
                 ],
                 "success_return": ["-?[0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -95,7 +96,7 @@
                     "NTCIP1218-v01::rsuLocationLat.0"
                 ],
                 "success_return": ["INTEGER: -?[0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -106,7 +107,7 @@
                     "NTCIP1218-v01::rsuLocationLon.0"
                 ],
                 "success_return": ["INTEGER: -?[0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -128,7 +129,7 @@
                     "NTCIP1218-v01::rsuLocationDesc.0"
                 ],
                 "success_return": ["STRING: "],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -139,7 +140,7 @@
                     "NTCIP1218-v01::rsuGnssMaxDeviation.0"
                 ],
                 "success_return": ["INTEGER: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -150,7 +151,7 @@
                     "NTCIP1218-v01::rsuLocationDeviation.0"
                 ],
                 "success_return": ["INTEGER: [0-9]+","20001"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -161,7 +162,7 @@
                     "NTCIP1218-v01::rsuGnssPositionError.0"
                 ],
                 "success_return": ["INTEGER: [0-9]+","200001"],
-                "fail_return": ["no such instance"]
+                "fail_return": ["no such instance", "no such object"]
             }
         },
         {
@@ -172,7 +173,7 @@
                     "NTCIP1218-v01::rsuStatus.0"
                 ],
                 "success_return": ["INTEGER: [1-5]", "okay", "warning", "critical", "unknown"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -183,7 +184,7 @@
                     "NTCIP1218-v01::rsuFirmwareVersion.0"
                 ],
                 "success_return": ["STRING: "],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -194,7 +195,7 @@
                     "NTCIP1218-v01::rsuMibVersion.0"
                 ],
                 "success_return": ["STRING: NTCIP1218"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -205,7 +206,7 @@
                     "NTCIP1218-v01::rsuID.0"
                 ],
                 "success_return": ["STRING: "],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -216,7 +217,7 @@
                     "NTCIP1218-v01::rsuHostIpAddr.0"
                 ],
                 "success_return": ["STRING: [0-9A-Fa-f]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -227,7 +228,7 @@
                     "NTCIP1218-v01::rsuHostNetMask.0"
                 ],
                 "success_return": ["STRING: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -238,7 +239,7 @@
                     "NTCIP1218-v01::rsuHostGateway.0"
                 ],
                 "success_return": ["STRING: [0-9A-Fa-f]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -249,7 +250,7 @@
                     "NTCIP1218-v01::rsuHostDNS.0"
                 ],
                 "success_return": ["STRING: [0-9A-Fa-f]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -260,7 +261,7 @@
                     "NTCIP1218-v01::rsuHostDHCPEnable.0"
                 ],
                 "success_return": ["STRING: [1-2]+", "disable", "enable"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
 
@@ -272,7 +273,7 @@
                     "NTCIP1218-v01::rsuServiceTable"
                 ],
                 "success_return": ["STRING: RSU","STRING: GNSS"],
-                "fail_return": ["no such instance"]
+                "fail_return": ["no such instance", "no such object"]
             }
         },
         {
@@ -283,7 +284,7 @@
                     "NTCIP1218-v01::rsuReboot.0"
                 ],
                 "success_return": ["INTEGER: 0"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -294,7 +295,7 @@
                     "NTCIP1218-v01::rsuTimeSincePowerOn.0"
                 ],
                 "success_return": ["Counter32: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -305,7 +306,7 @@
                     "NTCIP1218-v01::rsuIntTemp.0"
                 ],
                 "success_return": ["INTEGER: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -316,7 +317,7 @@
                     "NTCIP1218-v01::maxRsuMessageCountsByPsid.0"
                 ],
                 "success_return": ["INTEGER: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -327,7 +328,7 @@
                     "NTCIP1218-v01::rsuMessageCountsByPsidTable"
                 ],
                 "success_return": [],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error"]
             }
         },
         {
@@ -338,7 +339,7 @@
                     "NTCIP1218-v01::rsuClockSource.0"
                 ],
                 "success_return": ["INTEGER: "],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -349,7 +350,7 @@
                     "NTCIP1218-v01::rsuClockSourceStatus.0"
                 ],
                 "success_return": ["INTEGER: "],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -360,7 +361,7 @@
                     "NTCIP1218-v01::rsuClockSourceTimeout.0"
                 ],
                 "success_return": ["INTEGER: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -371,7 +372,7 @@
                     "NTCIP1218-v01::rsuClockDeviationTolerance.0 i 0"
                 ],
                 "success_return": ["INTEGER: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -382,7 +383,7 @@
                     "NTCIP1218-v01::maxRsuReceivedMsgs.0"
                 ],
                 "success_return": ["INTEGER: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -392,8 +393,8 @@
                 "snmp_cmd_elements": [
                     "NTCIP1218-v01::rsuReceivedMsgTable"
                 ],
-                "success_return": [],
-                "fail_return": ["error", "no such instance"]
+                "success_return": ["STRING: [0-9]+"],
+                "fail_return": ["error"]
             }
         },
         {
@@ -404,7 +405,7 @@
                     "NTCIP1218-v01::maxRsuMsgRepeat.0"
                 ],
                 "success_return": ["INTEGER: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -424,7 +425,7 @@
                     "rsuMsgRepeatOptions.55 x 00"
                 ],
                 "success_return": ["55 = INTEGER: 183"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -435,7 +436,7 @@
                     "NTCIP1218-v01::rsuMsgRepeatStatusTable"
                 ],
                 "success_return": ["55 = INTEGER: 183"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -446,7 +447,7 @@
                     "NTCIP1218-v01::rsuMsgRepeatOptions.55"
                 ],
                 "success_return": ["BITS: [01]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -457,7 +458,7 @@
                     "NTCIP1218-v01::rsuMsgRepeatStatus.55 i 6"
                 ],
                 "success_return": ["55 = INTEGER: "],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -468,7 +469,7 @@
                     "NTCIP1218-v01::rsuSecCredReq.0"
                 ],
                 "success_return": ["INTEGER: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -479,7 +480,7 @@
                     "NTCIP1218-v01::rsuSecEnrollCertStatus.0"
                 ],
                 "success_return": ["INTEGER: ", "enrolled", "notEnrolled", "unknown"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -490,7 +491,7 @@
                     "NTCIP1218-v01::rsuSecEnrollCertValidRegion.0"
                 ],
                 "success_return": ["INTEGER: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -501,7 +502,7 @@
                     "NTCIP1218-v01::rsuSecEnrollCertUrl.0"
                 ],
                 "success_return": ["STRING: https"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -512,7 +513,7 @@
                     "NTCIP1218-v01::rsuSecEnrollCertId.0"
                 ],
                 "success_return": ["STRING: "],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -523,7 +524,7 @@
                     "NTCIP1218-v01::rsuSecEnrollCertExpiration.0"
                 ],
                 "success_return": ["STRING: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -534,7 +535,7 @@
                     "NTCIP1218-v01::rsuSecuritySource.0"
                 ],
                 "success_return": ["INTEGER: ", "scms"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -545,7 +546,7 @@
                     "NTCIP1218-v01::rsuSecAppCertUrl.0"
                 ],
                 "success_return": ["STRING: https"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -556,7 +557,7 @@
                     "NTCIP1218-v01::maxRsuSecAppCerts.0"
                 ],
                 "success_return": ["INTEGER: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -567,7 +568,7 @@
                     "NTCIP1218-v01::rsuSecAppCertTable"
                 ],
                 "success_return": ["1 = INTEGER: [0-9]+"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -578,7 +579,7 @@
                     "NTCIP1218-v01::rsuSecCertRevocationUrl.0"
                 ],
                 "success_return": ["STRING: https"],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         },
         {
@@ -589,7 +590,7 @@
                     "NTCIP1218-v01::rsuSecCertRevocationTime.0"
                 ],
                 "success_return": [],
-                "fail_return": ["error", "no such instance"]
+                "fail_return": ["error", "no such instance", "no such object"]
             }
         }
     ]
