@@ -51,7 +51,7 @@
                 "snmp_cmd_elements": [
                     "NTCIP1218-v01::rsuGnssOutputString.0"
                 ],
-                "success_return": ["$GPGGA,[0-9]+"],
+                "success_return": ["GPGGA,[0-9]+"],
                 "fail_return": ["error", "GPGGA,{4}"]
             }
         },
